@@ -1,7 +1,61 @@
 import React from "react";
 
 const Login = () => {
-  return <div>This is Login Page</div>;
+  return (
+    <div className="flex justify-center items-center h-screen w-screen ">
+      {/* Login Card */}
+      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl px-10 py-10 w-[23%] md:w-96 text-white shadow-xl">
+        <h1 className="text-center text-3xl font-semibold mb-10">Login</h1>
+
+        <form className="flex flex-col gap-8">
+          {/* Email */}
+          <div>
+            <input
+              type="text"
+              placeholder="Email"
+              className="w-full bg-transparent outline-none border-b border-gray-300 pb-2 placeholder-gray-200 focus:border-white transition"
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full bg-transparent outline-none border-b border-gray-300 pb-2 placeholder-gray-200 focus:border-white transition"
+            />
+          </div>
+
+          {/* Remember + Forget */}
+          <div className="flex justify-between text-sm text-gray-200">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="accent-white" />
+              Remember Me
+            </label>
+            <span className="hover:underline cursor-pointer">
+              Forget Password
+            </span>
+          </div>
+
+          {/* Log In Button */}
+          <button
+            type="submit"
+            className="bg-white text-gray-800 font-semibold py-2 rounded-full hover:bg-gray-100 transition"
+          >
+            Log In
+          </button>
+
+          {/* Register Link */}
+          <p className="text-center text-sm text-gray-200 mt-2">
+            Don’t have an account?{" "}
+            <span className="text-white font-semibold hover:underline cursor-pointer">
+              Register
+            </span>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default Login;
