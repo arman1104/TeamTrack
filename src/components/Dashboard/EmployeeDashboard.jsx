@@ -4,7 +4,7 @@ import StatsSection from "../EmployeeDashboardUI/StatsSection";
 
 const EmployeeDashboard = () => {
   return (
-    <div className="p-14 bg-[#1C1C1C] h-screen">
+    <div className="p-10 sm:p-14 bg-[#1C1C1C] h-screen">
       <Header />
       <StatsSection />
     </div>

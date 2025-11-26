@@ -7,7 +7,7 @@ const Header = () => {
         Hello <br />
         <span className="text-3xl font-semibold">Arman👋</span>
       </h1>
-      <button className="px-6 py-[6px] bg-[#0BB882] rounded-sm text-md font-medium">
+      <button className="px-5 py-1 md:px-6 md:py-[6px] bg-[#0BB882] rounded-sm text-md font-medium">
         Log Out
       </button>
     </div>
