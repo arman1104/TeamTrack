@@ -47,11 +47,11 @@ import Header from "../EmployeeDashboardUI/Header";
 
 const AdminDashboard = () => {
   return (
-    <div className="min-h-screen w-full p-10 bg-black">
+    <div className="min-h-screen w-full p-5 md:p-10 ">
       <Header />
 
       {/* MOBILE LAYOUT (ONLY FOR sm and BELOW) */}
-      <div className="w-full max-w-md bg-zinc-800 rounded-2xl p-8 shadow-lg mx-auto sm:max-w-lg md:hidden">
+      <div className="w-full max-w-md bg-zinc-800 rounded-xl p-8 mt-10 shadow-lg mx-auto sm:max-w-2xl lg:hidden">
         {/* Header with back button */}
         <div className="flex items-center mb-8">
           <button className="w-10 h-10 rounded-full border border-zinc-600 flex items-center justify-center text-white hover:bg-zinc-700 transition mr-4">
@@ -119,8 +119,8 @@ const AdminDashboard = () => {
       </div>
 
       {/* DESKTOP / TABLET LAYOUT (md AND ABOVE) */}
-      <div className="hidden md:flex w-full justify-center py-12">
-        <div className="w-full bg-zinc-800 rounded-lg p-8 shadow-lg">
+      <div className="hidden lg:flex w-full justify-center py-12">
+        <div className="w-full bg-zinc-800  rounded-lg p-8 shadow-lg">
           {/* Header with back button */}
           <div className="flex items-center mb-8">
             <button className="w-10 h-10 rounded-full border border-zinc-600 flex items-center justify-center text-white hover:bg-zinc-700 transition mr-4">
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
             {/* LEFT COLUMN */}
             <div className="w-1/2 space-y-6">
               <div>
-                <label className="block text-sm text-gray-300 mb-1">
+                <label className="block text-md text-gray-300 mb-1">
                   Task Title
                 </label>
                 <input
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-sm text-gray-300 mb-1">Date</label>
+                <label className="block text-md text-gray-300 mb-1">Date</label>
                 <input
                   type="date"
                   className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white"
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-sm text-gray-300 mb-1">
+                <label className="block text-md text-gray-300 mb-1">
                   Assign To
                 </label>
                 <input
@@ -164,7 +164,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-sm text-gray-300 mb-1">
+                <label className="block text-md text-gray-300 mb-1">
                   Category
                 </label>
                 <input
@@ -178,7 +178,7 @@ const AdminDashboard = () => {
             {/* RIGHT COLUMN */}
             <div className="w-1/2 flex flex-col justify-between">
               <div className="mb-6">
-                <label className="block text-sm text-gray-300 mb-1">
+                <label className="block text-md text-gray-300 mb-1">
                   Description
                 </label>
                 <textarea
@@ -188,7 +188,7 @@ const AdminDashboard = () => {
                 />
               </div>
 
-              <button className="w-full bg-[#0BB882] hover:bg-green-500 text-white py-3 rounded-xl">
+              <button className="w-full bg-[#0BB882] hover:bg-emerald-600 text-white py-3 rounded-xl">
                 Create Task
               </button>
             </div>
