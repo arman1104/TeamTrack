@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Login from "./components/Auth/Login";
 import EmployeeDashboard from "./components/Dashboard/EmployeeDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import { setLocalStorage } from "./utils/LocalStorage";
 import { getLocalStorage } from "./utils/LocalStorage";
+import { AuthContext } from "./context/AuthProvider";
 
 const App = () => {
   // useEffect(() => {
@@ -27,6 +28,9 @@ const App = () => {
 
   // handleLogin("user@me.com", 12345678);
   // handleLogin("admin@me.com", 12345678);
+
+  const data = useContext(AuthContext);
+  console.log(data);
 
   return (
     <>
