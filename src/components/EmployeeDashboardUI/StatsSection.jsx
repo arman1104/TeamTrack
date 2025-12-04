@@ -1,21 +1,54 @@
+// import React from "react";
+
+// const StatsSection = ({ data }) => {
+//   return (
+//     <div className="flex flex-wrap justify-between gap-5 mt-10 screen">
+//       <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-indigo-500 rounded-lg">
+//         <h2 className="text-3xl font-semibold">{data.taskNumbers.newTask}</h2>
+//         <h3 className="text-xl font-medium">New Task</h3>
+//       </div>
+//       <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-green-400 rounded-lg">
+//         <h2 className="text-3xl font-semibold">{data.taskNumbers.completed}</h2>
+//         <h3 className="text-xl font-medium">Completed</h3>
+//       </div>
+//       <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-orange-500 rounded-lg">
+//         <h2 className="text-3xl font-semibold">{data.taskNumbers.active}</h2>
+//         <h3 className="text-xl font-medium">Accepted</h3>
+//       </div>
+//       <div className="p-10 w-full sm:w-[48%] lg:w-[23%] px-9 bg-red-500 rounded-lg">
+//         <h2 className="text-3xl font-semibold">{data.taskNumbers.failed}</h2>
+//         <h3 className="text-xl font-medium">Failed</h3>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default StatsSection;
+
+// src/components/EmployeeDashboardUI/StatsSection.jsx
 import React from "react";
 
 const StatsSection = ({ data }) => {
+  if (!data || !data.taskNumbers) return null;
+
   return (
-    <div className="flex flex-wrap justify-between gap-5 mt-10 screen">
-      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-indigo-500 rounded-lg">
+    <div className="flex flex-wrap justify-between gap-5 mt-10">
+      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] bg-indigo-500 rounded-lg">
         <h2 className="text-3xl font-semibold">{data.taskNumbers.newTask}</h2>
         <h3 className="text-xl font-medium">New Task</h3>
       </div>
-      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-green-400 rounded-lg">
+
+      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] bg-green-400 rounded-lg">
         <h2 className="text-3xl font-semibold">{data.taskNumbers.completed}</h2>
         <h3 className="text-xl font-medium">Completed</h3>
       </div>
-      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] py-7 px-9 bg-orange-500 rounded-lg">
+
+      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] bg-orange-500 rounded-lg">
         <h2 className="text-3xl font-semibold">{data.taskNumbers.active}</h2>
         <h3 className="text-xl font-medium">Accepted</h3>
       </div>
-      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] px-9 bg-red-500 rounded-lg">
+
+      <div className="p-10 w-full sm:w-[48%] lg:w-[23%] bg-red-500 rounded-lg">
         <h2 className="text-3xl font-semibold">{data.taskNumbers.failed}</h2>
         <h3 className="text-xl font-medium">Failed</h3>
       </div>

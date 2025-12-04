@@ -1,29 +1,25 @@
-import React, { useState } from "react";
-import { setLocalStorage } from "../../utils/LocalStorage";
+import React from "react";
 
-const Header = () => {
-  // console.log(data);
-  // const [userName, setUserName] = useState("");
+const Header = ({ data, handleLogout }) => {
+  // If admin, no data is passed → show "Admin"
+  const userName = data ? data.firstName : "Admin";
 
-  // if (!data) {
-  //   setUserName("Admin");
-  // } else {
-  //   setUserName(data.firstName);
-  // }
+  // const logOutUser = () => {
+  //   localStorage.removeItem("loggedInUser");
+  //   window.location.reload();
+  // };
 
-  const logOutUser = () => {
-    localStorage.setItem("loggedInUser", "");
-    window.location.reload();
-  };
   return (
     <div className="flex items-end justify-between">
       <h1 className="text-2xl font-font-medium">
         Hello <br />
-        <span className="text-3xl font-semibold">userName👋</span>
+        <span className="text-3xl font-semibold">{userName} 👋</span>
       </h1>
+
       <button
         className="px-5 py-1 md:px-6 md:py-[6px] bg-[#0BB882] rounded-sm text-md font-medium"
-        onClick={logOutUser}
+        // onClick={logOutUser}
+        onClick={handleLogout}
       >
         Log Out
       </button>

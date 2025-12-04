@@ -8,8 +8,8 @@ const Login = ({ handleLogin }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     handleLogin(email, password);
-    console.log("Your Email is", email);
-    console.log("Your Password is", password);
+    // console.log("Your Email is", email);
+    // console.log("Your Password is", password);
     setEmail("");
     setPassword("");
   };
