@@ -7,7 +7,7 @@ const employees = [
     password: "12345678",
     taskNumbers: {
       active: 1,
-      newTask: 1,
+      newTask: 0,
       completed: 1,
       failed: 1,
     },
@@ -50,7 +50,7 @@ const employees = [
     email: "sara.khan@example.com",
     password: "12345678",
     taskNumbers: {
-      active: 2,
+      active: 1,
       newTask: 1,
       completed: 1,
       failed: 1,

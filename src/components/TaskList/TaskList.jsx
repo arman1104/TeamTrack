@@ -10,7 +10,7 @@ const TaskList = ({ data }) => {
   return (
     <div
       id="tasklist"
-      className="flex items-center justify-start gap-6 flex-nowrap overflow-x-auto h-[50%] w-full py-5 mt-10 rounded-lg"
+      className="flex items-center justify-start gap-4 flex-nowrap overflow-x-auto h-[50%] w-full py-5 mt-10 rounded-lg"
     >
       {data.tasks.map((task, idx) => {
         if (task.newTask) return <NewTask key={idx} data={task} />;
