@@ -1,21 +1,47 @@
-import React from "react";
-import Header from "../EmployeeDashboardUI/Header";
-import StatsSection from "../EmployeeDashboardUI/StatsSection";
-import TaskList from "../TaskList/TaskList";
+// import React from "react";
+// import Header from "../EmployeeDashboardUI/Header";
+// import StatsSection from "../EmployeeDashboardUI/StatsSection";
+// import TaskList from "../TaskList/TaskList";
 
-// const EmployeeDashboard = ({ data, handleLogout }) => {
+// // const EmployeeDashboard = ({ data, handleLogout }) => {
+// //   return (
+// //     <div className="p-10 sm:p-14 bg-[#1C1C1C] h-screen">
+// //       <Header data={data} handleLogout={handleLogout} />
+// //       <StatsSection data={data} />
+// //       <TaskList data={data} />
+// //     </div>
+// //   );
+// // };
+
+// // export default EmployeeDashboard;
+
+// import { useContext } from "react";
+// import { AuthContext } from "../../context/AuthProvider";
+
+// const EmployeeDashboard = ({ handleLogout, data }) => {
+//   const { userData } = useContext(AuthContext);
+
+//   if (!userData) return null;
+
+//   // Find current logged-in employee by email or id
+//   const employee = userData.employees.find((e) => e.email === data.email);
+
 //   return (
 //     <div className="p-10 sm:p-14 bg-[#1C1C1C] h-screen">
-//       <Header data={data} handleLogout={handleLogout} />
-//       <StatsSection data={data} />
-//       <TaskList data={data} />
+//       <Header data={employee} handleLogout={handleLogout} />
+//       <StatsSection data={employee} />
+//       <TaskList data={employee} />
 //     </div>
 //   );
 // };
 
 // export default EmployeeDashboard;
 
-import { useContext } from "react";
+// src/components/Dashboard/EmployeeDashboard.jsx
+import React, { useContext } from "react";
+import Header from "../EmployeeDashboardUI/Header";
+import StatsSection from "../EmployeeDashboardUI/StatsSection";
+import TaskList from "../TaskList/TaskList";
 import { AuthContext } from "../../context/AuthProvider";
 
 const EmployeeDashboard = ({ handleLogout, data }) => {
@@ -23,8 +49,12 @@ const EmployeeDashboard = ({ handleLogout, data }) => {
 
   if (!userData) return null;
 
-  // Find current logged-in employee by email or id
-  const employee = userData.employees.find((e) => e.email === data.email);
+  // find up-to-date employee by id or email from context
+  const employee = userData.employees.find(
+    (e) => data && (e.id === data.id || e.email === data.email)
+  );
+
+  if (!employee) return <div className="text-white">Employee not found</div>;
 
   return (
     <div className="p-10 sm:p-14 bg-[#1C1C1C] h-screen">

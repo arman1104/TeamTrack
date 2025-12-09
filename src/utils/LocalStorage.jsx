@@ -1,16 +1,287 @@
-localStorage.clear();
-const employees = [
+// localStorage.clear();
+// const employees = [
+//   {
+//     id: 1,
+//     firstName: "John",
+//     email: "john.doe@example.com",
+//     password: "12345678",
+//     taskNumbers: {
+//       active: 1,
+//       newTask: 0,
+//       completed: 1,
+//       failed: 1,
+//     },
+//     tasks: [
+//       {
+//         title: "Prepare Sales Report",
+//         description: "Compile weekly sales data and prepare summary.",
+//         date: "2025-02-01",
+//         category: "Reporting",
+//         active: true,
+//         newTask: true,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Client Follow-Up",
+//         description: "Call pending clients for project updates.",
+//         date: "2025-02-03",
+//         category: "Communication",
+//         active: false,
+//         newTask: false,
+//         completed: true,
+//         failed: false,
+//       },
+//       {
+//         title: "Update CRM Data",
+//         description: "Add new clients to CRM database.",
+//         date: "2025-02-05",
+//         category: "Database",
+//         active: false,
+//         newTask: false,
+//         completed: false,
+//         failed: true,
+//       },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     firstName: "Sara",
+//     email: "sara.khan@example.com",
+//     password: "12345678",
+//     taskNumbers: {
+//       active: 1,
+//       newTask: 1,
+//       completed: 1,
+//       failed: 1,
+//     },
+//     tasks: [
+//       {
+//         title: "Design Landing Page",
+//         description: "Create a responsive landing page layout.",
+//         date: "2025-02-02",
+//         category: "Design",
+//         active: true,
+//         newTask: true,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Fix UI Bugs",
+//         description: "Resolve navbar and modal issues.",
+//         date: "2025-02-05",
+//         category: "UI/UX",
+//         active: true,
+//         newTask: false,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Team Presentation",
+//         description: "Prepare slides for weekly UI review.",
+//         date: "2025-02-09",
+//         category: "Presentation",
+//         active: false,
+//         newTask: false,
+//         completed: true,
+//         failed: false,
+//       },
+//       {
+//         title: "Create Icon Set",
+//         description: "Build custom icons for dashboard.",
+//         date: "2025-02-01",
+//         category: "Design",
+//         active: false,
+//         newTask: false,
+//         completed: false,
+//         failed: true,
+//       },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     firstName: "Michael",
+//     email: "michael.smith@example.com",
+//     password: "12345678",
+//     taskNumbers: {
+//       active: 1,
+//       newTask: 1,
+//       completed: 1,
+//       failed: 1,
+//     },
+//     tasks: [
+//       {
+//         title: "API Integration",
+//         description: "Integrate employee API into dashboard.",
+//         date: "2025-02-04",
+//         category: "Development",
+//         active: true,
+//         newTask: true,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Write Unit Tests",
+//         description: "Add test coverage for authentication module.",
+//         date: "2025-02-07",
+//         category: "Testing",
+//         active: false,
+//         newTask: false,
+//         completed: true,
+//         failed: false,
+//       },
+//       {
+//         title: "Database Optimization",
+//         description: "Improve query performance for employee table.",
+//         date: "2025-02-10",
+//         category: "Database",
+//         active: false,
+//         newTask: false,
+//         completed: false,
+//         failed: true,
+//       },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     firstName: "Riya",
+//     email: "riya.sharma@example.com",
+//     password: "12345678",
+//     taskNumbers: {
+//       active: 2,
+//       newTask: 1,
+//       completed: 1,
+//       failed: 1,
+//     },
+//     tasks: [
+//       {
+//         title: "Prepare Attendance Report",
+//         description: "Generate monthly attendance records.",
+//         date: "2025-02-03",
+//         category: "Reporting",
+//         active: true,
+//         newTask: true,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Staff Meeting",
+//         description: "Attend HR policy discussion meeting.",
+//         date: "2025-02-05",
+//         category: "Meeting",
+//         active: false,
+//         newTask: false,
+//         completed: true,
+//         failed: false,
+//       },
+//       {
+//         title: "Document Verification",
+//         description: "Verify submitted employee documents.",
+//         date: "2025-02-08",
+//         category: "HR",
+//         active: false,
+//         newTask: false,
+//         completed: false,
+//         failed: true,
+//       },
+//       {
+//         title: "Update Policies",
+//         description: "Revise onboarding policy documents.",
+//         date: "2025-02-06",
+//         category: "HR",
+//         active: true,
+//         newTask: false,
+//         completed: false,
+//         failed: false,
+//       },
+//     ],
+//   },
+//   {
+//     id: 5,
+//     firstName: "Arjun",
+//     email: "arjun.patel@example.com",
+//     password: "12345678",
+//     taskNumbers: {
+//       active: 2,
+//       newTask: 1,
+//       completed: 1,
+//       failed: 0,
+//     },
+//     tasks: [
+//       {
+//         title: "Server Maintenance",
+//         description: "Perform routine server checks.",
+//         date: "2025-02-01",
+//         category: "IT Support",
+//         active: true,
+//         newTask: true,
+//         completed: false,
+//         failed: false,
+//       },
+//       {
+//         title: "Setup Workstations",
+//         description: "Install required software for new employees.",
+//         date: "2025-02-04",
+//         category: "IT Support",
+//         active: false,
+//         newTask: false,
+//         completed: true,
+//         failed: false,
+//       },
+//       {
+//         title: "Resolve Tickets",
+//         description: "Clear pending IT support tickets.",
+//         date: "2025-02-07",
+//         category: "Support",
+//         active: false,
+//         newTask: false,
+//         completed: false,
+//         failed: true,
+//       },
+//       {
+//         title: "Network Diagnostics",
+//         description: "Check office network latency.",
+//         date: "2025-02-10",
+//         category: "Networking",
+//         active: true,
+//         newTask: false,
+//         completed: false,
+//         failed: false,
+//       },
+//     ],
+//   },
+// ];
+
+// // * Admin JSON
+// const admin = [
+//   {
+//     id: 101,
+//     email: "admin@example.com",
+//     password: "12345678",
+//   },
+// ];
+
+// export const setLocalStorage = () => {
+//   localStorage.setItem(`employees`, JSON.stringify(employees));
+//   localStorage.setItem(`admin`, JSON.stringify(admin));
+// };
+// export const getLocalStorage = () => {
+//   const employees = JSON.parse(localStorage.getItem(`employees`));
+//   const admin = JSON.parse(localStorage.getItem(`admin`));
+//   return { employees, admin };
+//   //   console.log(employees, admin);
+// };
+
+// src/utils/LocalStorage.js
+// safe seeding + helpers
+
+const employeesSeed = [
   {
     id: 1,
     firstName: "John",
     email: "john.doe@example.com",
     password: "12345678",
-    taskNumbers: {
-      active: 1,
-      newTask: 0,
-      completed: 1,
-      failed: 1,
-    },
+    taskNumbers: { active: 1, newTask: 1, completed: 1, failed: 1 },
     tasks: [
       {
         title: "Prepare Sales Report",
@@ -49,12 +320,7 @@ const employees = [
     firstName: "Sara",
     email: "sara.khan@example.com",
     password: "12345678",
-    taskNumbers: {
-      active: 1,
-      newTask: 1,
-      completed: 1,
-      failed: 1,
-    },
+    taskNumbers: { active: 2, newTask: 1, completed: 1, failed: 1 },
     tasks: [
       {
         title: "Design Landing Page",
@@ -103,12 +369,7 @@ const employees = [
     firstName: "Michael",
     email: "michael.smith@example.com",
     password: "12345678",
-    taskNumbers: {
-      active: 1,
-      newTask: 1,
-      completed: 1,
-      failed: 1,
-    },
+    taskNumbers: { active: 1, newTask: 1, completed: 1, failed: 1 },
     tasks: [
       {
         title: "API Integration",
@@ -147,12 +408,7 @@ const employees = [
     firstName: "Riya",
     email: "riya.sharma@example.com",
     password: "12345678",
-    taskNumbers: {
-      active: 2,
-      newTask: 1,
-      completed: 1,
-      failed: 1,
-    },
+    taskNumbers: { active: 2, newTask: 1, completed: 1, failed: 1 },
     tasks: [
       {
         title: "Prepare Attendance Report",
@@ -201,12 +457,7 @@ const employees = [
     firstName: "Arjun",
     email: "arjun.patel@example.com",
     password: "12345678",
-    taskNumbers: {
-      active: 2,
-      newTask: 1,
-      completed: 1,
-      failed: 0,
-    },
+    taskNumbers: { active: 2, newTask: 1, completed: 1, failed: 0 },
     tasks: [
       {
         title: "Server Maintenance",
@@ -252,8 +503,7 @@ const employees = [
   },
 ];
 
-// * Admin JSON
-const admin = [
+const adminSeed = [
   {
     id: 101,
     email: "admin@example.com",
@@ -261,13 +511,33 @@ const admin = [
   },
 ];
 
-export const setLocalStorage = () => {
-  localStorage.setItem(`employees`, JSON.stringify(employees));
-  localStorage.setItem(`admin`, JSON.stringify(admin));
+export const seedLocalStorageIfMissing = () => {
+  try {
+    if (!localStorage.getItem("employees")) {
+      localStorage.setItem("employees", JSON.stringify(employeesSeed));
+    }
+    if (!localStorage.getItem("admin")) {
+      localStorage.setItem("admin", JSON.stringify(adminSeed));
+    }
+  } catch (err) {
+    console.error("localStorage seed error", err);
+  }
 };
+
 export const getLocalStorage = () => {
-  const employees = JSON.parse(localStorage.getItem(`employees`));
-  const admin = JSON.parse(localStorage.getItem(`admin`));
-  return { employees, admin };
-  //   console.log(employees, admin);
+  try {
+    const employees = JSON.parse(localStorage.getItem("employees")) || [];
+    const admin = JSON.parse(localStorage.getItem("admin")) || [];
+    return { employees, admin };
+  } catch (err) {
+    return { employees: [], admin: [] };
+  }
+};
+
+export const saveEmployeesToLocalStorage = (employees) => {
+  try {
+    localStorage.setItem("employees", JSON.stringify(employees));
+  } catch (err) {
+    console.error("save employees failed", err);
+  }
 };

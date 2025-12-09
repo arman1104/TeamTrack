@@ -1,30 +1,96 @@
+// import React, { createContext, useEffect, useState } from "react";
+// import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
+
+// export const AuthContext = createContext();
+
+// const AuthProvider = ({ children }) => {
+//   const [userData, setUserData] = useState(null);
+
+//   useEffect(() => {
+//     // Only set localStorage ONCE when empty
+//     const existingEmployees = localStorage.getItem("employees");
+
+//     if (!existingEmployees) {
+//       setLocalStorage(); // Insert initial JSON data
+//     }
+
+//     const { employees, admin } = getLocalStorage();
+
+//     // userData structure must match what CreateTask expects
+//     setUserData({
+//       employees: employees,
+//       admin: admin,
+//     });
+//   }, []);
+
+//   // Do not render app until data is loaded
+//   if (!userData) return null;
+
+//   return (
+//     <AuthContext.Provider value={{ userData, setUserData }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// export default AuthProvider;
+
+// !#####################################
+
+// AuthProvider.jsx
 import React, { createContext, useEffect, useState } from "react";
-import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
+// import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
+import {
+  getLocalStorage,
+  seedLocalStorageIfMissing,
+  saveEmployeesToLocalStorage,
+} from "../utils/LocalStorage";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    // Only set localStorage ONCE when empty
-    const existingEmployees = localStorage.getItem("employees");
+  // -----------------------------------------
+  // FIX COUNTERS AUTOMATICALLY FROM TASKS
+  // -----------------------------------------
+  const calculateTaskNumbers = (tasks) => {
+    const numbers = { active: 0, newTask: 0, completed: 0, failed: 0 };
 
+    tasks.forEach((t) => {
+      if (t.newTask) numbers.newTask++;
+      if (t.active) numbers.active++;
+      if (t.completed) numbers.completed++;
+      if (t.failed) numbers.failed++;
+    });
+
+    return numbers;
+  };
+
+  useEffect(() => {
+    // Load initial data OR use existing localstorage
+    const existingEmployees = localStorage.getItem("employees");
     if (!existingEmployees) {
-      setLocalStorage(); // Insert initial JSON data
+      setLocalStorage(); // Load seed JSON only if empty
     }
 
     const { employees, admin } = getLocalStorage();
 
-    // userData structure must match what CreateTask expects
+    // -----------------------------------------
+    // FIX ALL EMPLOYEE COUNTERS HERE
+    // -----------------------------------------
+    const fixedEmployees = employees.map((emp) => ({
+      ...emp,
+      taskNumbers: calculateTaskNumbers(emp.tasks),
+    }));
+
     setUserData({
-      employees: employees,
+      employees: fixedEmployees,
       admin: admin,
     });
   }, []);
 
-  // Do not render app until data is loaded
-  if (!userData) return null;
+  if (!userData) return null; // prevent rendering before data loads
 
   return (
     <AuthContext.Provider value={{ userData, setUserData }}>
