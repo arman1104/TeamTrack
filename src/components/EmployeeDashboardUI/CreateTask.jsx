@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 
@@ -19,11 +18,23 @@ const CreateTask = () => {
     setCategory("");
   };
 
+  // Helper to recalculate task numbers
+  const calculateTaskNumbers = (tasks) => {
+    const numbers = { active: 0, newTask: 0, completed: 0, failed: 0 };
+    tasks.forEach((t) => {
+      if (t.newTask) numbers.newTask++;
+      if (t.active) numbers.active++;
+      if (t.completed) numbers.completed++;
+      if (t.failed) numbers.failed++;
+    });
+    return numbers;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
     if (!taskTitle.trim() || !asignTo.trim()) {
-      alert("Please add Task Title and Assign To (employee firstName).");
+      alert("Please add Task Title and Assign To (employee name or email).");
       return;
     }
 
@@ -38,25 +49,37 @@ const CreateTask = () => {
       failed: false,
     };
 
-    // assign by firstName case-insensitive (first match)
+    // Find employee by firstName OR email (case-insensitive)
+    const assignValue = asignTo.trim().toLowerCase();
+    let found = false;
+
     const updatedEmployees = (userData.employees || []).map((emp) => {
-      if (emp.firstName.toLowerCase() === asignTo.trim().toLowerCase()) {
-        // push new task and increment newTask count
+      const matchName = emp.firstName.toLowerCase() === assignValue;
+      const matchEmail = emp.email.toLowerCase() === assignValue;
+      
+      if (matchName || matchEmail) {
+        found = true;
+        const newTasks = [...emp.tasks, newTask];
         return {
           ...emp,
-          tasks: [...emp.tasks, newTask],
-          taskNumbers: {
-            ...emp.taskNumbers,
-            newTask: (emp.taskNumbers.newTask || 0) + 1,
-          },
+          tasks: newTasks,
+          taskNumbers: calculateTaskNumbers(newTasks),
         };
       }
       return emp;
     });
 
+    if (!found) {
+      alert("Employee not found. Please enter a valid name or email.");
+      return;
+    }
+
     setUserData({ ...userData, employees: updatedEmployees });
     clearForm();
   };
+
+  // Get employee list for dropdown/suggestions
+  const employees = userData?.employees || [];
 
   return (
     <>
@@ -71,9 +94,7 @@ const CreateTask = () => {
 
         <form onSubmit={submitHandler} className="space-y-6">
           <div>
-            <label className="block text-sm text-gray-300 mb-1">
-              Task Title
-            </label>
+            <label className="block text-sm text-gray-300 mb-1">Task Title</label>
             <input
               type="text"
               value={taskTitle}
@@ -84,9 +105,7 @@ const CreateTask = () => {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-300 mb-1">
-              Description
-            </label>
+            <label className="block text-sm text-gray-300 mb-1">Description</label>
             <textarea
               rows={4}
               value={taskDescription}
@@ -107,16 +126,19 @@ const CreateTask = () => {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-300 mb-1">
-              Assign To
-            </label>
-            <input
-              type="text"
+            <label className="block text-sm text-gray-300 mb-1">Assign To</label>
+            <select
               value={asignTo}
               onChange={(e) => setAsignTo(e.target.value)}
-              placeholder="Employee First Name (e.g. John)"
               className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white"
-            />
+            >
+              <option value="">Select Employee</option>
+              {employees.map((emp) => (
+                <option key={emp.id} value={emp.email}>
+                  {emp.firstName} ({emp.email})
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -149,9 +171,7 @@ const CreateTask = () => {
           <form onSubmit={submitHandler} className="w-full flex gap-10">
             <div className="w-1/2 space-y-6">
               <div>
-                <label className="block text-md text-gray-300 mb-1">
-                  Task Title
-                </label>
+                <label className="block text-md text-gray-300 mb-1">Task Title</label>
                 <input
                   type="text"
                   value={taskTitle}
@@ -172,22 +192,23 @@ const CreateTask = () => {
               </div>
 
               <div>
-                <label className="block text-md text-gray-300 mb-1">
-                  Assign To
-                </label>
-                <input
-                  type="text"
+                <label className="block text-md text-gray-300 mb-1">Assign To</label>
+                <select
                   value={asignTo}
                   onChange={(e) => setAsignTo(e.target.value)}
-                  placeholder="Employee First Name (e.g. John)"
                   className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white"
-                />
+                >
+                  <option value="">Select Employee</option>
+                  {employees.map((emp) => (
+                    <option key={emp.id} value={emp.email}>
+                      {emp.firstName} ({emp.email})
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
-                <label className="block text-md text-gray-300 mb-1">
-                  Category
-                </label>
+                <label className="block text-md text-gray-300 mb-1">Category</label>
                 <input
                   type="text"
                   value={category}
@@ -200,9 +221,7 @@ const CreateTask = () => {
 
             <div className="w-1/2 flex flex-col justify-between">
               <div className="mb-6">
-                <label className="block text-md text-gray-300 mb-1">
-                  Description
-                </label>
+                <label className="block text-md text-gray-300 mb-1">Description</label>
                 <textarea
                   rows={8}
                   value={taskDescription}

@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from "react";
-// import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
 import {
   getLocalStorage,
   seedLocalStorageIfMissing,
@@ -11,37 +10,27 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
-  // -----------------------------------------
-  // FIX COUNTERS AUTOMATICALLY FROM TASKS
-  // -----------------------------------------
+  // Calculate task numbers from tasks array
   const calculateTaskNumbers = (tasks) => {
     const numbers = { active: 0, newTask: 0, completed: 0, failed: 0 };
-
     tasks.forEach((t) => {
       if (t.newTask) numbers.newTask++;
       if (t.active) numbers.active++;
       if (t.completed) numbers.completed++;
       if (t.failed) numbers.failed++;
     });
-
     return numbers;
   };
 
+  // Initial load
   useEffect(() => {
-    // Load initial data OR use existing localstorage
-    const existingEmployees = localStorage.getItem("employees");
-    if (!existingEmployees) {
-      setLocalStorage(); // Load seed JSON only if empty
-    }
-
+    seedLocalStorageIfMissing();
     const { employees, admin } = getLocalStorage();
 
-    // -----------------------------------------
-    // FIX ALL EMPLOYEE COUNTERS HERE
-    // -----------------------------------------
+    // Fix all employee counters based on actual tasks
     const fixedEmployees = employees.map((emp) => ({
       ...emp,
-      taskNumbers: calculateTaskNumbers(emp.tasks),
+      taskNumbers: calculateTaskNumbers(emp.tasks || []),
     }));
 
     setUserData({
@@ -50,10 +39,22 @@ const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  if (!userData) return null; // prevent rendering before data loads
+  // Sync to localStorage whenever userData.employees changes
+  useEffect(() => {
+    if (userData && userData.employees) {
+      saveEmployeesToLocalStorage(userData.employees);
+    }
+  }, [userData]);
+
+  // Custom setter that also updates localStorage
+  const updateUserData = (newData) => {
+    setUserData(newData);
+  };
+
+  if (!userData) return null;
 
   return (
-    <AuthContext.Provider value={{ userData, setUserData }}>
+    <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,107 +4,67 @@ import NewTask from "./NewTask";
 import CompleteTask from "./CompleteTask";
 import FailedTask from "./FailedTask";
 import { AuthContext } from "../../context/AuthProvider";
+import { saveEmployeesToLocalStorage } from "../../utils/LocalStorage";
 
 const TaskList = ({ data }) => {
   const { userData, setUserData } = useContext(AuthContext);
 
   if (!data || !data.tasks) return null;
 
-  // Use indices to uniquely update tasks
+  // Helper to recalculate task numbers from tasks array
+  const calculateTaskNumbers = (tasks) => {
+    const numbers = { active: 0, newTask: 0, completed: 0, failed: 0 };
+    tasks.forEach((t) => {
+      if (t.newTask) numbers.newTask++;
+      if (t.active) numbers.active++;
+      if (t.completed) numbers.completed++;
+      if (t.failed) numbers.failed++;
+    });
+    return numbers;
+  };
+
+  const updateEmployeeAndSync = (updatedEmployees, empId) => {
+    setUserData({ ...userData, employees: updatedEmployees });
+    
+    // Update loggedInUser in localStorage
+    const saved = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+    if (saved && saved.role === "employee" && saved.data && saved.data.id === empId) {
+      const freshEmp = updatedEmployees.find((e) => e.id === empId);
+      localStorage.setItem("loggedInUser", JSON.stringify({ role: "employee", data: freshEmp }));
+    }
+  };
+
   const handleAccept = (empId, taskIndex) => {
     const updatedEmployees = (userData.employees || []).map((emp) => {
       if (emp.id !== empId) return emp;
       const newTasks = emp.tasks.map((t, idx) =>
         idx === taskIndex ? { ...t, newTask: false, active: true } : t
       );
-      // update counters
-      const taskNumbers = { ...emp.taskNumbers };
-      taskNumbers.newTask = (taskNumbers.newTask || 0) - 1;
-      taskNumbers.active = (taskNumbers.active || 0) + 1;
-      return { ...emp, tasks: newTasks, taskNumbers };
+      return { ...emp, tasks: newTasks, taskNumbers: calculateTaskNumbers(newTasks) };
     });
-    setUserData({ ...userData, employees: updatedEmployees });
-    // Also update loggedInUser in localStorage if needed (App restores from localStorage on refresh)
-    const saved = JSON.parse(localStorage.getItem("loggedInUser") || "null");
-    if (
-      saved &&
-      saved.role === "employee" &&
-      saved.data &&
-      saved.data.id === empId
-    ) {
-      const freshEmp = updatedEmployees.find((e) => e.id === empId);
-      localStorage.setItem(
-        "loggedInUser",
-        JSON.stringify({ role: "employee", data: freshEmp })
-      );
-    }
+    updateEmployeeAndSync(updatedEmployees, empId);
   };
 
   const handleComplete = (empId, taskIndex) => {
     const updatedEmployees = (userData.employees || []).map((emp) => {
       if (emp.id !== empId) return emp;
       const newTasks = emp.tasks.map((t, idx) =>
-        idx === taskIndex
-          ? { ...t, active: false, completed: true, newTask: false }
-          : t
+        idx === taskIndex ? { ...t, active: false, completed: true, newTask: false } : t
       );
-      // update counters: decrement active or newTask whichever had it, increment completed
-      const taskNumbers = { ...emp.taskNumbers };
-      const task = emp.tasks[taskIndex];
-      if (task) {
-        if (task.active) taskNumbers.active = (taskNumbers.active || 0) - 1;
-        if (task.newTask) taskNumbers.newTask = (taskNumbers.newTask || 0) - 1;
-      }
-      taskNumbers.completed = (taskNumbers.completed || 0) + 1;
-      return { ...emp, tasks: newTasks, taskNumbers };
+      return { ...emp, tasks: newTasks, taskNumbers: calculateTaskNumbers(newTasks) };
     });
-    setUserData({ ...userData, employees: updatedEmployees });
-    const saved = JSON.parse(localStorage.getItem("loggedInUser") || "null");
-    if (
-      saved &&
-      saved.role === "employee" &&
-      saved.data &&
-      saved.data.id === empId
-    ) {
-      const freshEmp = updatedEmployees.find((e) => e.id === empId);
-      localStorage.setItem(
-        "loggedInUser",
-        JSON.stringify({ role: "employee", data: freshEmp })
-      );
-    }
+    updateEmployeeAndSync(updatedEmployees, empId);
   };
 
   const handleFail = (empId, taskIndex) => {
     const updatedEmployees = (userData.employees || []).map((emp) => {
       if (emp.id !== empId) return emp;
       const newTasks = emp.tasks.map((t, idx) =>
-        idx === taskIndex
-          ? { ...t, active: false, failed: true, newTask: false }
-          : t
+        idx === taskIndex ? { ...t, active: false, failed: true, newTask: false } : t
       );
-      const taskNumbers = { ...emp.taskNumbers };
-      const task = emp.tasks[taskIndex];
-      if (task) {
-        if (task.active) taskNumbers.active = (taskNumbers.active || 0) - 1;
-        if (task.newTask) taskNumbers.newTask = (taskNumbers.newTask || 0) - 1;
-      }
-      taskNumbers.failed = (taskNumbers.failed || 0) + 1;
-      return { ...emp, tasks: newTasks, taskNumbers };
+      return { ...emp, tasks: newTasks, taskNumbers: calculateTaskNumbers(newTasks) };
     });
-    setUserData({ ...userData, employees: updatedEmployees });
-    const saved = JSON.parse(localStorage.getItem("loggedInUser") || "null");
-    if (
-      saved &&
-      saved.role === "employee" &&
-      saved.data &&
-      saved.data.id === empId
-    ) {
-      const freshEmp = updatedEmployees.find((e) => e.id === empId);
-      localStorage.setItem(
-        "loggedInUser",
-        JSON.stringify({ role: "employee", data: freshEmp })
-      );
-    }
+    updateEmployeeAndSync(updatedEmployees, empId);
   };
 
   // Render in priority: new -> active -> completed -> failed
@@ -113,7 +73,7 @@ const TaskList = ({ data }) => {
     if (t.newTask) ordered.push({ t, idx });
   });
   data.tasks.forEach((t, idx) => {
-    if (t.active) ordered.push({ t, idx });
+    if (t.active && !t.newTask) ordered.push({ t, idx });
   });
   data.tasks.forEach((t, idx) => {
     if (t.completed) ordered.push({ t, idx });
